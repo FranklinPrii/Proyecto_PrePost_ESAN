@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SisEdutivaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TBLPAGOSDT">
+    <Key>
+      <PropertyRef Name="IDCliente" />
+    </Key>
+    <Property Name="IDCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Cliente" Type="varchar" MaxLength="200" />
+    <Property Name="DNI" Type="int" />
+    <Property Name="Precio" Type="decimal" Precision="8" Scale="2" />
+  </EntityType>
+  <Function Name="SP_Gestionar_Pagos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="IDCliente" Type="int" Mode="In" />
+    <Parameter Name="Cliente" Type="nvarchar" Mode="In" />
+    <Parameter Name="DNI" Type="int" Mode="In" />
+    <Parameter Name="Precio" Type="decimal" Mode="In" />
+    <Parameter Name="opc" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="SisEdutivaModelStoreContainer">
+    <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

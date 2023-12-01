@@ -1,0 +1,280 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Metodos de Pago Esan</h2>
+<br />
+
+
+<!-- The Modal REGISTRAR -->
+<div class="modal" id="myModal">
+
+    <div class="wrap">
+        <form>
+            <div class="form-header">
+                <h2>Registrate Aquí</h2>
+            </div>
+            <div class="form-body">
+                <fieldset>
+                    <legend><i class="fa fa-user"></i> User Information</legend>
+                    <label for="fname">CLIENTE</label>
+                    <input type="text" id="txtCliente" required>
+                    <label for="lname">DNI</label>
+                    <input type="text" id="txtDni" required>
+                    <label for="address">PRECIO</label>
+                    <input type="text" id="txtPrecio" required>
+
+                </fieldset>
+
+            </div>
+            <div class="form-footer">
+                <input type="submit" id="btnInsertar" value="Registrate">
+
+            </div>
+        </form>
+    </div>
+
+
+
+</div>
+
+<!-- The Modal actualizar -->
+<div class="modal" id="myModalActualizar">
+
+    <div class="wrap">
+        <form>
+            <div class="form-header">
+                <h2>Actualiza Aquí</h2>
+            </div>
+            <div class="form-body">
+                <fieldset>
+                    <legend><i class="fa fa-user"></i> User Information</legend>
+                    <label for="fname">CLIENTE</label>
+                    <input type="text" id="txtCliente" required>
+                    <label for="lname">DNI</label>
+                    <input type="text" id="txtDni" required>
+                    <label for="address">PRECIO</label>
+                    <input type="text" id="txtPrecio" required>
+
+                </fieldset>
+
+            </div>
+            <div class="form-footer">
+                <input type="submit" id="IdActualizar" value="Actualizar">
+
+            </div>
+        </form>
+    </div>
+
+
+
+</div>
+
+
+
+<!-- TABLA -->
+<div class="row m-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="dt-buttons">
+                <button type="button" onclick="$('#myModal').modal('show');" class="btn btn-primary" id="btnInsertar" data-bs-toggle="modal" data-bs-target="#myModal">Nuevo Registro</button>
+                <button type="button" onclick="$('#myModalActualizar').modal('show');" id="btnActualizar" class="btn btn-primary">Editar</button>
+                <button type="button" class="btn btn-primary">Eliminar</button>
+
+            </div>
+            <br />
+            <div class="card-body">
+                <table id="myTable" class="table selected">
+                    <thead>
+                        <tr>
+                            <th>IDCliente</th>
+                            <th>Cliente</th>
+                            <th>DNI</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#myTable").DataTable({
+                "ajax": {
+                    "url": "@Url.Action("Listar", "Home")",
+                    "type": "GET",
+                    "dataType": "json"
+                },
+                "columns": [
+                    { "data": "IDCliente" },
+                    { "data": "Cliente" },
+                    { "data": "DNI" },
+                    { "data": "Precio" },
+
+                ]
+
+            });
+
+
+        });
+
+
+    </script>
+
+    @*SCRIPT PARA INSERTAR*@
+    <script>
+
+           /*btnInsertar*/
+                $(document).ready(function () {
+                    $("#btnInsertar").click(function myfunction() {
+                        var cliente = $("#txtCliente").val();
+                        var dni = $("#txtDni").val();
+                        var precio = $("#txtPrecio").val();
+
+                        // Datos de ejemplo, debes obtener estos valores de tus controles HTML
+                        var idCliente = 1;
+
+                        $.ajax({
+                            url: "@Url.Action("InsertarOActualizarPago", "Home")", // Ruta del controlador y acción
+                            type: "POST",
+                            data: { idCliente: idCliente, cliente: cliente, dni: dni, precio: precio },
+                            success: function () {
+                                alert("Pago insertado o actualizado exitosamente");
+                            },
+                            error: function () {
+                                alert("Hubo un error al insertar o actualizar el pago");
+                            }
+                        });
+
+
+
+                    });
+                });
+    </script>
+
+
+
+    @*PINTE LOS DATOS A LA HORA DE DAR CLICK*@
+<script>
+
+        $(document).ready(function () {
+            var table = $('#myTable').DataTable({
+                select: true,
+                // otras opciones...
+            });
+
+
+            // Evento de clic en una fila para seleccionarla
+            $('#myTable').on('click', 'tbody tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+        });
+
+
+        // Evento de clic en el botón "Actualizar"
+    $('#btnActualizar').on('click', function () {
+        
+            // Obtén la fila seleccionada
+            var filaSeleccionada = table.row('.selected');
+
+            // Verifica si hay una fila seleccionada
+            if (filaSeleccionada.any()) {
+                // Obtén los datos de los campos de entrada
+                var idcliente = $("#txtIdCliente").val();
+                alert("Hola")
+                return
+                var cliente = $("#txtCliente").val();
+                var dni = $("#txtDni").val();
+                var precio = $("#txtPrecio").val();
+
+                // Utiliza el método row().data() para establecer los datos
+                filaSeleccionada.data({
+                    IDCliente: idcliente,
+                    Cliente: cliente,
+                    DNI: dni,
+                    Precio: precio
+
+                });
+
+                // Dibuja la fila actualizada
+                filaSeleccionada.draw();
+             // En este punto, deberías enviar los datos actualizados al servidor
+                // utilizando la función actualizarDatos y pasar los datos como argumento
+                actualizarDatos({
+                    IDCliente: idcliente,
+                    Cliente: cliente,
+                    DNI: dni,
+                    Precio: precio
+                });
+            } else {
+                console.error("No hay fila seleccionada para actualizar.");
+            }
+        });
+
+        // Función para simular la actualización de datos en el servidor
+        function actualizarDatos(datos) {
+            $.ajax({
+                url: "@Url.Action("ActualizarPago", "Home")",
+                type: "POST",
+                data: datos,
+                success: function (response) {
+                    console.log("Respuesta del servidor:", response);
+                    alert("Registro Actualizado Correctamente")
+                    // Puedes realizar acciones adicionales según la respuesta del servidor
+                    // Por ejemplo, mostrar un mensaje de éxito, etc.
+                },
+                error: function (error) {
+                    console.error("Error en la solicitud AJAX: " + error.statusText);
+                }
+            });
+        }
+        
+</script>
+
+
+
+    @*SCRIPT PARA ACTUALIZAR*@
+    @*<script>
+
+                $(document).ready(function () {
+            $("#btnActualizar").click(function () {
+                // Obtener valores de los campos
+                var idCliente = obtenerIdCliente(); // Asegúrate de implementar esta función según tu lógica
+                var cliente = $("#txtCliente").val();
+                var dni = $("#txtDni").val();
+                var precio = $("#txtPrecio").val();
+
+                // Datos de ejemplo, debes obtener estos valores de tus controles HTML
+
+                $.ajax({
+                    url: "@Url.Action("ActualizarPago", "Home")", // Ruta del controlador y acción
+                    type: "POST",
+                    data: { idCliente: idCliente, cliente: cliente, dni: dni, precio: precio },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert("Error: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Hubo un error al actualizar el pago");
+                    }
+                });
+            });
+        }
+                
+
+
+    </script>*@
+
+}

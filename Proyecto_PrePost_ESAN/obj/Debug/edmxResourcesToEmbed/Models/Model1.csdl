@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SisEdutivaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TBLPAGOSDT">
+    <Key>
+      <PropertyRef Name="IDCliente" />
+    </Key>
+    <Property Name="IDCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Cliente" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DNI" Type="Int32" />
+    <Property Name="Precio" Type="Decimal" Precision="8" Scale="2" />
+  </EntityType>
+  <EntityContainer Name="SisEdutivaEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" />
+    <FunctionImport Name="SP_Gestionar_Pagos" ReturnType="Collection(SisEdutivaModel.SP_Gestionar_Pagos_Result)">
+      <Parameter Name="IDCliente" Mode="In" Type="Int32" />
+      <Parameter Name="Cliente" Mode="In" Type="String" />
+      <Parameter Name="DNI" Mode="In" Type="Int32" />
+      <Parameter Name="Precio" Mode="In" Type="Decimal" />
+      <Parameter Name="opc" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="SP_Gestionar_Pagos_Result">
+    <Property Type="Int32" Name="IDCliente" Nullable="false" />
+    <Property Type="String" Name="Cliente" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="DNI" Nullable="true" />
+    <Property Type="Decimal" Name="Precio" Nullable="true" Precision="8" Scale="2" />
+  </ComplexType>
+</Schema>
