@@ -33,6 +33,7 @@ namespace Proyecto_PrePost_ESAN.Controllers
 
         }
 
+        [HttpPost]
         public JsonResult InsertarOActualizarPago(int idCliente, string cliente, int dni, decimal precio)
         {
             try
@@ -79,6 +80,7 @@ namespace Proyecto_PrePost_ESAN.Controllers
 
         }
 
+        [HttpPost]
         public JsonResult ActualizarPago(int idCliente, string cliente, int dni, decimal precio)
         {
             var pago = db.TBLPAGOSDT.SingleOrDefault(p => p.IDCliente == idCliente);
@@ -97,6 +99,24 @@ namespace Proyecto_PrePost_ESAN.Controllers
             return Json(new { success = false, message = "No se encontró el pago con IDCliente proporcionado" });
         }
 
+
+
+
+        [HttpPost]
+        public JsonResult EliminarPago(int idCliente)
+        {
+            var pago = db.TBLPAGOSDT.SingleOrDefault(p => p.IDCliente == idCliente);
+
+            if (pago != null)
+            {
+                db.TBLPAGOSDT.Remove(pago);
+                db.SaveChanges();
+
+                return Json(new { success = true, message = "Pago eliminado exitosamente" });
+            }
+
+            return Json(new { success = false, message = "No se encontró el pago con IDCliente proporcionado" });
+        }
 
 
     }

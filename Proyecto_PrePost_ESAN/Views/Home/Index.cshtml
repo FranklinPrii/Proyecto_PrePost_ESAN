@@ -15,7 +15,7 @@
                 <h2>Registrate Aquí</h2>
             </div>
             <div class="form-body">
-                <fieldset>
+                <fieldset>          
                     <legend><i class="fa fa-user"></i> User Information</legend>
                     <label for="fname">CLIENTE</label>
                     <input type="text" id="txtCliente" required>
@@ -49,11 +49,13 @@
             <div class="form-body">
                 <fieldset>
                     <legend><i class="fa fa-user"></i> User Information</legend>
-                    <label for="fname">CLIENTE</label>
+                    <label for="txtIdCliente">IdCliente</label>
+                    <input type="text" id="txtIdCliente" required>
+                    <label for="txtCliente">CLIENTE</label>
                     <input type="text" id="txtCliente" required>
-                    <label for="lname">DNI</label>
+                    <label for="txtDni">DNI</label>
                     <input type="text" id="txtDni" required>
-                    <label for="address">PRECIO</label>
+                    <label for="txtPrecio">PRECIO</label>
                     <input type="text" id="txtPrecio" required>
 
                 </fieldset>
@@ -79,7 +81,7 @@
             <div class="dt-buttons">
                 <button type="button" onclick="$('#myModal').modal('show');" class="btn btn-primary" id="btnInsertar" data-bs-toggle="modal" data-bs-target="#myModal">Nuevo Registro</button>
                 <button type="button" onclick="$('#myModalActualizar').modal('show');" id="btnActualizar" class="btn btn-primary">Editar</button>
-                <button type="button" class="btn btn-primary">Eliminar</button>
+                <button type="button" id="btnEliminar" class="btn btn-primary">Eliminar</button>
 
             </div>
             <br />
@@ -241,24 +243,20 @@
 </script>
 
 
-
-    @*SCRIPT PARA ACTUALIZAR*@
-    @*<script>
-
-                $(document).ready(function () {
-            $("#btnActualizar").click(function () {
-                // Obtener valores de los campos
-                var idCliente = obtenerIdCliente(); // Asegúrate de implementar esta función según tu lógica
-                var cliente = $("#txtCliente").val();
-                var dni = $("#txtDni").val();
-                var precio = $("#txtPrecio").val();
+<script>
+        $(document).ready(function () {
+            $("#btnEliminar").click(function () {
+                // Obtener valor del campo IDCliente
+                var idCliente = $("#txtIdCliente").val();
+                alert(idCliente);
+                return
 
                 // Datos de ejemplo, debes obtener estos valores de tus controles HTML
 
                 $.ajax({
-                    url: "@Url.Action("ActualizarPago", "Home")", // Ruta del controlador y acción
+                    url: "@Url.Action("EliminarPago", "Home")", // Ruta del controlador y acción
                     type: "POST",
-                    data: { idCliente: idCliente, cliente: cliente, dni: dni, precio: precio },
+                    data: { idCliente: idCliente },
                     success: function (response) {
                         if (response.success) {
                             alert(response.message);
@@ -267,14 +265,14 @@
                         }
                     },
                     error: function () {
-                        alert("Hubo un error al actualizar el pago");
+                        alert("Hubo un error al eliminar el pago");
                     }
                 });
             });
-        }
-                
+        });
 
 
-    </script>*@
+</script>
+   
 
 }
