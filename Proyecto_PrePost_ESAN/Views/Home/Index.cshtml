@@ -1,6 +1,4 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿@{ ViewBag.Title = "Home Page"; }
 
 <h2>Metodos de Pago Esan</h2>
 <br />
@@ -15,7 +13,7 @@
                 <h2>Registrate Aquí</h2>
             </div>
             <div class="form-body">
-                <fieldset>          
+                <fieldset>
                     <legend><i class="fa fa-user"></i> User Information</legend>
                     <label for="fname">CLIENTE</label>
                     <input type="text" id="txtCliente" required>
@@ -33,7 +31,6 @@
             </div>
         </form>
     </div>
-
 
 
 </div>
@@ -69,9 +66,7 @@
     </div>
 
 
-
 </div>
-
 
 
 <!-- TABLA -->
@@ -81,7 +76,7 @@
             <div class="dt-buttons">
                 <button type="button" onclick="$('#myModal').modal('show');" class="btn btn-primary" id="btnInsertar" data-bs-toggle="modal" data-bs-target="#myModal">Nuevo Registro</button>
                 <button type="button" onclick="$('#myModalActualizar').modal('show');" id="btnActualizar" class="btn btn-primary">Editar</button>
-                <button type="button" id="btnEliminar" class="btn btn-primary">Eliminar</button>
+                <button type="button" id="btnEliminar" class="btn btn-danger">Eliminar</button>
 
             </div>
             <br />
@@ -97,6 +92,10 @@
                     </thead>
                 </table>
             </div>
+
+            <input type="hidden" id="tempid" name="tempid" />
+
+
         </div>
     </div>
 </div>
@@ -153,15 +152,13 @@
                         });
 
 
-
                     });
                 });
     </script>
 
 
-
     @*PINTE LOS DATOS A LA HORA DE DAR CLICK*@
-<script>
+    <script>
 
         $(document).ready(function () {
             var table = $('#myTable').DataTable({
@@ -184,9 +181,8 @@
 
         // Evento de clic en el botón "Actualizar"
     $('#btnActualizar').on('click', function () {
-        
-            // Obtén la fila seleccionada
-            var filaSeleccionada = table.row('.selected');
+        // Obtén la fila seleccionada
+        var filaSeleccionada = table.row(IDCliente);
 
             // Verifica si hay una fila seleccionada
             if (filaSeleccionada.any()) {
@@ -239,40 +235,61 @@
                 }
             });
         }
-        
-</script>
+    </script>
 
 
-<script>
+    <script>
+
+
         $(document).ready(function () {
-            $("#btnEliminar").click(function () {
-                // Obtener valor del campo IDCliente
-                var idCliente = $("#txtIdCliente").val();
-                alert(idCliente);
-                return
 
-                // Datos de ejemplo, debes obtener estos valores de tus controles HTML
 
-                $.ajax({
-                    url: "@Url.Action("EliminarPago", "Home")", // Ruta del controlador y acción
-                    type: "POST",
-                    data: { idCliente: idCliente },
-                    success: function (response) {
-                        if (response.success) {
-                            alert(response.message);
-                        } else {
-                            alert("Error: " + response.message);
-                        }
-                    },
-                    error: function () {
-                        alert("Hubo un error al eliminar el pago");
-                    }
-                });
+            console.log("ready!");
+
+
+            var table = $('#myTable').DataTable();
+
+            $('#myTable tbody').on('click', 'tr', function () {
+                var rowData = table.row(this).data();
+
+                $("#tempid").val(rowData.IDCliente);
+
+                console.log(rowData.IDCliente);
+
+
             });
+
+
+            $("#btnEliminar").click(function () {
+
+                var tempid = $("#tempid").val();
+
+                 $.ajax({
+                    url: "@Url.Action("EliminarPago", "Home")",
+                    type: "POST",
+                     data: { IDCliente: tempid},
+                    success: function (response) {
+                        console.log("Respues del servidor:", response);
+                        alert("Registro Eliminado Correctamente");
+
+                        // Puedes realizar acciones adicionales según la respuesta del servidor
+                    },
+                    error: function (error) {
+                        console.error("Error en la solicitud AJAX: " + error.statusText);
+                    }
+                 });
+            });
+
+
+
         });
 
 
-</script>
-   
+
+
+
+
+    </script>
+
 
 }
