@@ -176,19 +176,18 @@
                     $(this).addClass('selected');
                 }
             });
-        });
 
 
-        // Evento de clic en el botón "Actualizar"
+        @*// Evento de clic en el botón "Actualizar"
     $('#btnActualizar').on('click', function () {
         // Obtén la fila seleccionada
-        var filaSeleccionada = table.row(IDCliente);
+        var filaSeleccionada = table.row('.selected');
 
             // Verifica si hay una fila seleccionada
             if (filaSeleccionada.any()) {
                 // Obtén los datos de los campos de entrada
                 var idcliente = $("#txtIdCliente").val();
-                alert("Hola")
+                alert("Pepe")
                 return
                 var cliente = $("#txtCliente").val();
                 var dni = $("#txtDni").val();
@@ -234,8 +233,58 @@
                     console.error("Error en la solicitud AJAX: " + error.statusText);
                 }
             });
-        }
+        }*@
+
+    });
     </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+            console.log("ready!");
+
+
+            var table = $('#myTable').DataTable();
+
+            $('#myTable tbody').on('click', 'tr', function () {
+                var rowData = table.row(this).data();
+
+                $("#tempid").val(rowData.IDCliente);
+
+                console.log(rowData.IDCliente);
+
+
+
+            });
+
+
+            $("#btnActualizar").click(function () {
+                // Obtener los valores de los campos
+                var idCliente = $("#txtIdCliente").val();
+                var cliente = $("#txtCliente").val();
+                var dni = $("#txtDni").val();
+                var precio = $("#txtPrecio").val();
+
+                // Mostrar los valores en el formulario (puedes ajustar esto según tu necesidad)
+                console.log("IdCliente: " + idCliente + "\nCliente: " + cliente + "\nDNI: " + dni + "\nPrecio: " + precio);
+
+                 
+
+
+
+
+            });
+        });
+
+
+    </script>
+
+
+
 
 
     <script>
@@ -256,6 +305,7 @@
 
                 console.log(rowData.IDCliente);
 
+                
 
             });
 
