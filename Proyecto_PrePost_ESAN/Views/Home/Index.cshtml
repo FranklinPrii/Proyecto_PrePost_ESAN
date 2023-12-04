@@ -46,14 +46,12 @@
             <div class="form-body">
                 <fieldset>
                     <legend><i class="fa fa-user"></i> User Information</legend>
-                    <label for="txtIdCliente">IdCliente</label>
-                    <input type="text" id="txtIdCliente" required>
-                    <label for="txtCliente">CLIENTE</label>
-                    <input type="text" id="txtCliente" required>
-                    <label for="txtDni">DNI</label>
-                    <input type="text" id="txtDni" required>
-                    <label for="txtPrecio">PRECIO</label>
-                    <input type="text" id="txtPrecio" required>
+                    <label for="fname">CLIENTE</label>
+                    <input type="text" id="txtClientes" required>
+                    <label for="lname">DNI</label>
+                    <input type="text" id="txtDnis" required>
+                    <label for="address">PRECIO</label>
+                    <input type="text" id="txtPrecios" required>
 
                 </fieldset>
 
@@ -75,7 +73,9 @@
         <div class="card">
             <div class="dt-buttons">
                 <button type="button" onclick="$('#myModal').modal('show');" class="btn btn-primary" id="btnInsertar" data-bs-toggle="modal" data-bs-target="#myModal">Nuevo Registro</button>
-                <button type="button" onclick="$('#myModalActualizar').modal('show');" id="btnActualizar" class="btn btn-primary">Editar</button>
+                @*<button type="button" onclick="$('#myModalActualizar').modal('show');" id="btnActualizar" class="btn btn-primary">Editar</button>*@
+
+                <button onclick="$('#myModalActualizar').modal('show');" type="button" id="btnActualizar" class="btn btn-success">Update</button>
                 <button type="button" id="btnEliminar" class="btn btn-danger">Eliminar</button>
 
             </div>
@@ -93,7 +93,14 @@
                 </table>
             </div>
 
+
+            @*CAMPOS OCULTOS PARA CAPTURAR CADA FILA DEL DATATABLE*@
+
             <input type="hidden" id="tempid" name="tempid" />
+
+            <input type="hidden" id="tempCliente" name="tempCliente" />
+            <input type="hidden" id="tempDni" name="tempDni" />
+            <input type="hidden" id="tempPrecio" name="tempPrecio" />
 
 
         </div>
@@ -140,11 +147,11 @@
                         var idCliente = 1;
 
                         $.ajax({
-                            url: "@Url.Action("InsertarOActualizarPago", "Home")", // Ruta del controlador y acción
+                            url: "@Url.Action("Insertar", "Home")", // Ruta del controlador y acción
                             type: "POST",
                             data: { idCliente: idCliente, cliente: cliente, dni: dni, precio: precio },
                             success: function () {
-                                alert("Pago insertado o actualizado exitosamente");
+                                /*alert("Registro insertado exitosamente");*/
                             },
                             error: function () {
                                 alert("Hubo un error al insertar o actualizar el pago");
@@ -178,75 +185,12 @@
             });
 
 
-        @*// Evento de clic en el botón "Actualizar"
-    $('#btnActualizar').on('click', function () {
-        // Obtén la fila seleccionada
-        var filaSeleccionada = table.row('.selected');
-
-            // Verifica si hay una fila seleccionada
-            if (filaSeleccionada.any()) {
-                // Obtén los datos de los campos de entrada
-                var idcliente = $("#txtIdCliente").val();
-                alert("Pepe")
-                return
-                var cliente = $("#txtCliente").val();
-                var dni = $("#txtDni").val();
-                var precio = $("#txtPrecio").val();
-
-                // Utiliza el método row().data() para establecer los datos
-                filaSeleccionada.data({
-                    IDCliente: idcliente,
-                    Cliente: cliente,
-                    DNI: dni,
-                    Precio: precio
-
-                });
-
-                // Dibuja la fila actualizada
-                filaSeleccionada.draw();
-             // En este punto, deberías enviar los datos actualizados al servidor
-                // utilizando la función actualizarDatos y pasar los datos como argumento
-                actualizarDatos({
-                    IDCliente: idcliente,
-                    Cliente: cliente,
-                    DNI: dni,
-                    Precio: precio
-                });
-            } else {
-                console.error("No hay fila seleccionada para actualizar.");
-            }
         });
-
-        // Función para simular la actualización de datos en el servidor
-        function actualizarDatos(datos) {
-            $.ajax({
-                url: "@Url.Action("ActualizarPago", "Home")",
-                type: "POST",
-                data: datos,
-                success: function (response) {
-                    console.log("Respuesta del servidor:", response);
-                    alert("Registro Actualizado Correctamente")
-                    // Puedes realizar acciones adicionales según la respuesta del servidor
-                    // Por ejemplo, mostrar un mensaje de éxito, etc.
-                },
-                error: function (error) {
-                    console.error("Error en la solicitud AJAX: " + error.statusText);
-                }
-            });
-        }*@
-
-    });
     </script>
 
-
-
-    <script>
+    @*OBTENER LOS DATOS DEL MODAL / ACTUALIZAR *@
+<script>
         $(document).ready(function () {
-
-
-
-            console.log("ready!");
-
 
             var table = $('#myTable').DataTable();
 
@@ -254,46 +198,78 @@
                 var rowData = table.row(this).data();
 
                 $("#tempid").val(rowData.IDCliente);
+                $("#tempCliente").val(rowData.Cliente);
+                $("#tempDni").val(rowData.DNI);
+                $("#tempPrecio").val(rowData.Precio);
 
-                console.log(rowData.IDCliente);
-
-
+                /* console.log(rowData.IDCliente);*/
 
             });
 
+        });
 
+        $(document).ready(function () {
             $("#btnActualizar").click(function () {
-                // Obtener los valores de los campos
-                var idCliente = $("#txtIdCliente").val();
-                var cliente = $("#txtCliente").val();
-                var dni = $("#txtDni").val();
-                var precio = $("#txtPrecio").val();
-
-                // Mostrar los valores en el formulario (puedes ajustar esto según tu necesidad)
-                console.log("IdCliente: " + idCliente + "\nCliente: " + cliente + "\nDNI: " + dni + "\nPrecio: " + precio);
-
-                 
+                // Mostrar los datos en el modal antes de actualizar
+                var tempid = $("#tempid").val();
 
 
+                var tempCliente = $("#tempCliente").val();
+                $("#txtClientes").val(tempCliente);
 
+                var tempDni = $("#tempDni").val();
+                $("#txtDnis").val(tempDni);
+
+                var tempPrecio = $("#tempPrecio").val();
+                $("#txtPrecios").val(tempPrecio);
+
+
+
+                // Enviar datos al controlador mediante AJAX
+                // Al hacer clic en el botón de "Actualizar" dentro del modal
+                $("#IdActualizar").click(function () {
+                    // Obtener los valores actualizados desde el modal
+                    var modalCliente = $("#txtClientes").val();
+                    var modalDni = $("#txtDnis").val();
+                    var modalPrecio = $("#txtPrecios").val();
+
+                    
+                    // Enviar datos al controlador mediante AJAX
+                    $.ajax({
+                        url: "@Url.Action("ActualizarPago", "Home")",
+                        type: "POST",
+                        data: { idCliente: tempid, cliente: modalCliente, dni: modalDni, precio: modalPrecio },
+                        success: function (response) {
+                            if (response.success) {
+                                alert(response.message);
+                                // Puedes realizar más acciones después de una actualización exitosa
+                            } else {
+                                alert("Error: " + response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("Hubo un error al actualizar el pago");
+                        }
+                    });
+
+                });
 
             });
         });
 
 
-    </script>
+
+</script>
 
 
-
-
-
+    @*ELIMINAR REGISTRO*@
     <script>
 
 
         $(document).ready(function () {
 
 
-            console.log("ready!");
+            //console.log("ready!");
 
 
             var table = $('#myTable').DataTable();
@@ -303,9 +279,8 @@
 
                 $("#tempid").val(rowData.IDCliente);
 
-                console.log(rowData.IDCliente);
+               /* console.log(rowData.IDCliente);*/
 
-                
 
             });
 
@@ -319,7 +294,7 @@
                     type: "POST",
                      data: { IDCliente: tempid},
                     success: function (response) {
-                        console.log("Respues del servidor:", response);
+                      /*  console.log("Respues del servidor:", response);*/
                         alert("Registro Eliminado Correctamente");
 
                         // Puedes realizar acciones adicionales según la respuesta del servidor
@@ -328,18 +303,15 @@
                         console.error("Error en la solicitud AJAX: " + error.statusText);
                     }
                  });
-            });
 
+            });
 
 
         });
 
-
-
-
-
-
     </script>
 
+
+    
 
 }

@@ -34,24 +34,8 @@ namespace Proyecto_PrePost_ESAN.Controllers
         }
 
         [HttpPost]
-        public JsonResult InsertarOActualizarPago(int idCliente, string cliente, int dni, decimal precio)
-        {
-            try
-            {
-                // Verificar si el IDCliente ya existe
-                var pagoExistente = db.TBLPAGOSDT.SingleOrDefault(p => p.IDCliente == idCliente);
-
-                if (pagoExistente == null)
-                {
-                    //Actualizame el pago existente
-                    pagoExistente.Cliente = cliente;
-                    pagoExistente.DNI = dni;
-                    pagoExistente.Precio = precio;
-
-
-                }
-                else
-                {
+        public JsonResult Insertar(int idCliente, string cliente, int dni, decimal precio)
+        {                        
                     //Insertar un Nuevo registro
                     var nuevoPago = new TBLPAGOSDT
                     {
@@ -63,20 +47,9 @@ namespace Proyecto_PrePost_ESAN.Controllers
 
                     db.TBLPAGOSDT.Add(nuevoPago);
 
-                }
+                        db.SaveChanges();
 
-                db.SaveChanges();
-
-                return Json(new { success = true, message = "Datos ingresados correctamente a la tabla." });
-
-
-
-            }
-            catch (Exception ex)
-            {
-
-                return Json(new { success = false, message = "Error al insertar datos: " + ex.Message });
-            }
+                        return Json(new { success = true, message = "Datos ingresados correctamente a la tabla." });
 
         }
 
