@@ -17,5 +17,7 @@ namespace Proyecto_PrePost_ESAN.Models
         public string Cliente { get; set; }
         public Nullable<int> DNI { get; set; }
         public Nullable<decimal> Precio { get; set; }
+        public Nullable<System.DateTime> FechaInicio { get; set; }
+        public Nullable<System.DateTime> FechaFin { get; set; }
     }
 }

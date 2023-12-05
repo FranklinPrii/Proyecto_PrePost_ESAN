@@ -21,6 +21,10 @@
                     <input type="text" id="txtDni" required>
                     <label for="address">PRECIO</label>
                     <input type="text" id="txtPrecio" required>
+                    <label for="lname">FECHA INICIO</label>
+                    <input type="date" id="txtFechaini" required>
+                    <label for="lname">FECHA FIN</label>
+                    <input type="date" id="textFechafini" required>
 
                 </fieldset>
 
@@ -52,6 +56,10 @@
                     <input type="text" id="txtDnis" required>
                     <label for="address">PRECIO</label>
                     <input type="text" id="txtPrecios" required>
+                    <label for="address">Fecha Inicio</label>
+                    <input type="text" id="txtFechaIni" required>
+                    <label for="address">Fecha Fin</label>
+                    <input type="text" id="txtFechaFin" required>
 
                 </fieldset>
 
@@ -88,6 +96,8 @@
                             <th>Cliente</th>
                             <th>DNI</th>
                             <th>Precio</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
                         </tr>
                     </thead>
                 </table>
@@ -101,6 +111,8 @@
             <input type="hidden" id="tempCliente" name="tempCliente" />
             <input type="hidden" id="tempDni" name="tempDni" />
             <input type="hidden" id="tempPrecio" name="tempPrecio" />
+            <input type="hidden" id="tempFechainicio" name="tempFechainicio" />
+            <input type="hidden" id="tempFechafin" name="tempFechafin" />
 
 
         </div>
@@ -111,7 +123,10 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $("#myTable").DataTable({
+
+
+
+                   $("#myTable").DataTable({
                 "ajax": {
                     "url": "@Url.Action("Listar", "Home")",
                     "type": "GET",
@@ -122,18 +137,57 @@
                     { "data": "Cliente" },
                     { "data": "DNI" },
                     { "data": "Precio" },
+                    {
+                        "data": "FechaInicio",
+                        "render": function (data, type, row) {
+                            // Formatear la fecha utilizando Moment.js
+                            return moment(data).format('DD-MM-YYYY');
+                        }
+                    },
+                    {
+                        "data": "FechaFin",
+                        "render": function (data, type, row) {
+                            // Formatear la fecha utilizando Moment.js
+                            return moment(data).format('DD-MM-YYYY');
+                        }
+                    }
 
                 ]
 
             });
 
 
+            @* PINTE LOS DATOS A LA HORA DE DAR CLICK *@
+            var table = $('#myTable').DataTable();
+
+                $('#myTable').on('click', 'tbody tr', function () {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+
+
         });
+
+
+
+
 
 
     </script>
 
-    @*SCRIPT PARA INSERTAR*@
+
+
+
+
+
+
+
+
+      @*SCRIPT PARA INSERTAR*@
     <script>
 
            /*btnInsertar*/
@@ -142,6 +196,8 @@
                         var cliente = $("#txtCliente").val();
                         var dni = $("#txtDni").val();
                         var precio = $("#txtPrecio").val();
+                        var fechainicio = $("#txtFechaini").val();
+                        var fechafin = $("#textFechafini").val();
 
                         // Datos de ejemplo, debes obtener estos valores de tus controles HTML
                         var idCliente = 1;
@@ -149,7 +205,7 @@
                         $.ajax({
                             url: "@Url.Action("Insertar", "Home")", // Ruta del controlador y acción
                             type: "POST",
-                            data: { idCliente: idCliente, cliente: cliente, dni: dni, precio: precio },
+                            data: { idCliente: idCliente, cliente: cliente, dni: dni, precio: precio, fechainicio: fechainicio, fechafin: fechafin },
                             success: function () {
                                 /*alert("Registro insertado exitosamente");*/
                             },
@@ -164,35 +220,14 @@
     </script>
 
 
-    @*PINTE LOS DATOS A LA HORA DE DAR CLICK*@
-    <script>
+   
 
-        $(document).ready(function () {
-            var table = $('#myTable').DataTable({
-                select: true,
-                // otras opciones...
-            });
-
-
-            // Evento de clic en una fila para seleccionarla
-            $('#myTable').on('click', 'tbody tr', function () {
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            });
-
-
-        });
-    </script>
-
-    @*OBTENER LOS DATOS DEL MODAL / ACTUALIZAR *@
+    @*OBTENER LOS DATOS OCULTAMENTE Por EL hidden *@
 <script>
         $(document).ready(function () {
 
             var table = $('#myTable').DataTable();
+            
 
             $('#myTable tbody').on('click', 'tr', function () {
                 var rowData = table.row(this).data();
@@ -201,6 +236,8 @@
                 $("#tempCliente").val(rowData.Cliente);
                 $("#tempDni").val(rowData.DNI);
                 $("#tempPrecio").val(rowData.Precio);
+                $("#tempFechainicio").val(moment(rowData.FechaInicio).format('DD-MM-YYYY'));
+                $("#tempFechafin").val(moment(rowData.FechaFin).format('DD-MM-YYYY'));
 
                 /* console.log(rowData.IDCliente);*/
 
@@ -208,6 +245,8 @@
 
         });
 
+
+    @* Mostrar los datos Obtenidos en el Modal *@
         $(document).ready(function () {
             $("#btnActualizar").click(function () {
                 // Mostrar los datos en el modal antes de actualizar
@@ -223,8 +262,14 @@
                 var tempPrecio = $("#tempPrecio").val();
                 $("#txtPrecios").val(tempPrecio);
 
+                var tempFechainicio = $("#tempFechainicio").val();
+                $("#txtFechaIni").val(tempFechainicio);
+
+                var tempFechafin = $("#tempFechafin").val();
+                $("#txtFechaFin").val(tempFechafin);
 
 
+        /*ACTUALIZAR */
                 // Enviar datos al controlador mediante AJAX
                 // Al hacer clic en el botón de "Actualizar" dentro del modal
                 $("#IdActualizar").click(function () {
@@ -232,13 +277,15 @@
                     var modalCliente = $("#txtClientes").val();
                     var modalDni = $("#txtDnis").val();
                     var modalPrecio = $("#txtPrecios").val();
+                    var modalFechaIni = $("#txtFechaIni").val();
+                    var modalFechaFini = $("#txtFechaFin").val();
 
                     
                     // Enviar datos al controlador mediante AJAX
                     $.ajax({
                         url: "@Url.Action("ActualizarPago", "Home")",
                         type: "POST",
-                        data: { idCliente: tempid, cliente: modalCliente, dni: modalDni, precio: modalPrecio },
+                        data: { idCliente: tempid, cliente: modalCliente, dni: modalDni, precio: modalPrecio, fechainicio: modalFechaIni, fechafin: modalFechaFini },
                         success: function (response) {
                             if (response.success) {
                                 alert(response.message);
@@ -248,6 +295,7 @@
                             }
                         },
                         error: function () {
+                            myTable
                             alert("Hubo un error al actualizar el pago");
                         }
                     });
@@ -294,8 +342,10 @@
                     type: "POST",
                      data: { IDCliente: tempid},
                     success: function (response) {
-                      /*  console.log("Respues del servidor:", response);*/
-                        alert("Registro Eliminado Correctamente");
+                        console.log("Respues del servidor:", response);
+
+                        /*Para que refresque la pagina*/
+                        window.location.href = '/';
 
                         // Puedes realizar acciones adicionales según la respuesta del servidor
                     },

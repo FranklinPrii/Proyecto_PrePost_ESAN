@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'D:\Users\ftantacure\source\repos\Proyecto_Esan_Pe\Proyecto_PrePost_ESAN\Proyecto_PrePost_ESAN\Models\Model1.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'D:\PROYECTO_FORMULARIO_ESAN\Proyecto_PrePost_ESAN\Proyecto_PrePost_ESAN\Models\Model1.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.

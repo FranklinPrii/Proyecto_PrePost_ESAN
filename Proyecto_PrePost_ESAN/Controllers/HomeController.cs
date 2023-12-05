@@ -11,7 +11,7 @@ namespace Proyecto_PrePost_ESAN.Controllers
     public class HomeController : Controller
     {
 
-        private SisEdutivaEntities1 db = new SisEdutivaEntities1();
+        private SisEdutivaEntities3 db = new SisEdutivaEntities3();
 
         public ActionResult Index()
         {
@@ -23,26 +23,24 @@ namespace Proyecto_PrePost_ESAN.Controllers
         {
 
             //Con procedimientos Almacenados
-            var Lista = db.SP_Gestionar_Pagos(null, null, null, null, 1);
-
-
+            var Lista = db.SP_Gestionar_Pagos(null, null, null, null, 1,null,null);
 
             return Json(new { data = Lista }, JsonRequestBehavior.AllowGet);
-
-
 
         }
 
         [HttpPost]
-        public JsonResult Insertar(int idCliente, string cliente, int dni, decimal precio)
+        public JsonResult Insertar(int idCliente, string cliente, int dni, decimal precio,DateTime fechainicio,DateTime fechafin)
         {                        
                     //Insertar un Nuevo registro
                     var nuevoPago = new TBLPAGOSDT
                     {
-                        IDCliente = idCliente,
+                        
                         Cliente = cliente,
                         DNI = dni,
-                        Precio = precio
+                        Precio = precio,
+                        FechaInicio = fechainicio,
+                        FechaFin = fechafin
                     };
 
                     db.TBLPAGOSDT.Add(nuevoPago);
@@ -54,7 +52,7 @@ namespace Proyecto_PrePost_ESAN.Controllers
         }
 
         [HttpPost]
-        public JsonResult ActualizarPago(int idCliente, string cliente, int dni, decimal precio)
+        public JsonResult ActualizarPago(int idCliente, string cliente, int dni, decimal precio, DateTime fechainicio, DateTime fechafin)
         {
             var pago = db.TBLPAGOSDT.SingleOrDefault(p => p.IDCliente == idCliente);
 
@@ -62,7 +60,9 @@ namespace Proyecto_PrePost_ESAN.Controllers
             {
                 pago.Cliente = cliente;
                 pago.DNI = dni;
-                pago.Precio = precio;                                                                                       
+                pago.Precio = precio;
+                pago.FechaInicio = fechainicio;
+                pago.FechaFin = fechafin;
 
                 db.SaveChanges();
 

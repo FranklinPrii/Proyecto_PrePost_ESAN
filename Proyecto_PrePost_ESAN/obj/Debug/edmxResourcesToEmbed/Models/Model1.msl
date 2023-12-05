@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="SisEdutivaModelStoreContainer" CdmEntityContainer="SisEdutivaEntities1">
+  <EntityContainerMapping StorageEntityContainer="SisEdutivaModelStoreContainer" CdmEntityContainer="SisEdutivaEntities3">
     <EntitySetMapping Name="TBLPAGOSDT">
       <EntityTypeMapping TypeName="SisEdutivaModel.TBLPAGOSDT">
         <MappingFragment StoreEntitySet="TBLPAGOSDT">
@@ -8,6 +8,8 @@
           <ScalarProperty Name="Cliente" ColumnName="Cliente" />
           <ScalarProperty Name="DNI" ColumnName="DNI" />
           <ScalarProperty Name="Precio" ColumnName="Precio" />
+          <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+          <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -18,6 +20,8 @@
           <ScalarProperty Name="Cliente" ColumnName="Cliente" />
           <ScalarProperty Name="DNI" ColumnName="DNI" />
           <ScalarProperty Name="Precio" ColumnName="Precio" />
+          <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+          <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>

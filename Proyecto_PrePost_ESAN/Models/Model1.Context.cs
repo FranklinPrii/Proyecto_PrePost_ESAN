@@ -15,10 +15,10 @@ namespace Proyecto_PrePost_ESAN.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class SisEdutivaEntities1 : DbContext
+    public partial class SisEdutivaEntities3 : DbContext
     {
-        public SisEdutivaEntities1()
-            : base("name=SisEdutivaEntities1")
+        public SisEdutivaEntities3()
+            : base("name=SisEdutivaEntities3")
         {
         }
     
@@ -29,7 +29,7 @@ namespace Proyecto_PrePost_ESAN.Models
     
         public virtual DbSet<TBLPAGOSDT> TBLPAGOSDT { get; set; }
     
-        public virtual ObjectResult<SP_Gestionar_Pagos_Result> SP_Gestionar_Pagos(Nullable<int> iDCliente, string cliente, Nullable<int> dNI, Nullable<decimal> precio, Nullable<int> opc)
+        public virtual ObjectResult<SP_Gestionar_Pagos_Result> SP_Gestionar_Pagos(Nullable<int> iDCliente, string cliente, Nullable<int> dNI, Nullable<decimal> precio, Nullable<int> opc, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin)
         {
             var iDClienteParameter = iDCliente.HasValue ?
                 new ObjectParameter("IDCliente", iDCliente) :
@@ -51,7 +51,15 @@ namespace Proyecto_PrePost_ESAN.Models
                 new ObjectParameter("opc", opc) :
                 new ObjectParameter("opc", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Gestionar_Pagos_Result>("SP_Gestionar_Pagos", iDClienteParameter, clienteParameter, dNIParameter, precioParameter, opcParameter);
+            var fechaInicioParameter = fechaInicio.HasValue ?
+                new ObjectParameter("FechaInicio", fechaInicio) :
+                new ObjectParameter("FechaInicio", typeof(System.DateTime));
+    
+            var fechaFinParameter = fechaFin.HasValue ?
+                new ObjectParameter("FechaFin", fechaFin) :
+                new ObjectParameter("FechaFin", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Gestionar_Pagos_Result>("SP_Gestionar_Pagos", iDClienteParameter, clienteParameter, dNIParameter, precioParameter, opcParameter, fechaInicioParameter, fechaFinParameter);
         }
     }
 }

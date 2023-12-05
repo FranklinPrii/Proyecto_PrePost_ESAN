@@ -10,9 +10,11 @@
             <PropertyRef Name="IDCliente" />
           </Key>
           <Property Name="IDCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Cliente" Type="varchar" MaxLength="200" />
+          <Property Name="Cliente" Type="nvarchar" MaxLength="255" />
           <Property Name="DNI" Type="int" />
-          <Property Name="Precio" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FechaInicio" Type="datetime" />
+          <Property Name="FechaFin" Type="datetime" />
         </EntityType>
         <Function Name="SP_Gestionar_Pagos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IDCliente" Type="int" Mode="In" />
@@ -20,6 +22,8 @@
           <Parameter Name="DNI" Type="int" Mode="In" />
           <Parameter Name="Precio" Type="decimal" Mode="In" />
           <Parameter Name="opc" Type="int" Mode="In" />
+          <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+          <Parameter Name="FechaFin" Type="datetime" Mode="In" />
         </Function>
         <EntityContainer Name="SisEdutivaModelStoreContainer">
           <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" Schema="dbo" store:Type="Tables" />
@@ -34,11 +38,13 @@
             <PropertyRef Name="IDCliente" />
           </Key>
           <Property Name="IDCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Cliente" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Cliente" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DNI" Type="Int32" />
-          <Property Name="Precio" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="FechaFin" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityContainer Name="SisEdutivaEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SisEdutivaEntities3" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" />
           <FunctionImport Name="SP_Gestionar_Pagos" ReturnType="Collection(SisEdutivaModel.SP_Gestionar_Pagos_Result)">
             <Parameter Name="IDCliente" Mode="In" Type="Int32" />
@@ -46,20 +52,24 @@
             <Parameter Name="DNI" Mode="In" Type="Int32" />
             <Parameter Name="Precio" Mode="In" Type="Decimal" />
             <Parameter Name="opc" Mode="In" Type="Int32" />
+            <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SP_Gestionar_Pagos_Result">
           <Property Type="Int32" Name="IDCliente" Nullable="false" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="DNI" Nullable="true" />
-          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FechaFin" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SisEdutivaModelStoreContainer" CdmEntityContainer="SisEdutivaEntities1">
+        <EntityContainerMapping StorageEntityContainer="SisEdutivaModelStoreContainer" CdmEntityContainer="SisEdutivaEntities3">
           <EntitySetMapping Name="TBLPAGOSDT">
             <EntityTypeMapping TypeName="SisEdutivaModel.TBLPAGOSDT">
               <MappingFragment StoreEntitySet="TBLPAGOSDT">
@@ -67,6 +77,8 @@
                 <ScalarProperty Name="Cliente" ColumnName="Cliente" />
                 <ScalarProperty Name="DNI" ColumnName="DNI" />
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -77,6 +89,8 @@
                 <ScalarProperty Name="Cliente" ColumnName="Cliente" />
                 <ScalarProperty Name="DNI" ColumnName="DNI" />
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

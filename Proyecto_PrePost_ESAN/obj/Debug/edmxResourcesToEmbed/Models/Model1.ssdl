@@ -5,9 +5,11 @@
       <PropertyRef Name="IDCliente" />
     </Key>
     <Property Name="IDCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Cliente" Type="varchar" MaxLength="200" />
+    <Property Name="Cliente" Type="nvarchar" MaxLength="255" />
     <Property Name="DNI" Type="int" />
-    <Property Name="Precio" Type="decimal" Precision="8" Scale="2" />
+    <Property Name="Precio" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="FechaInicio" Type="datetime" />
+    <Property Name="FechaFin" Type="datetime" />
   </EntityType>
   <Function Name="SP_Gestionar_Pagos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="IDCliente" Type="int" Mode="In" />
@@ -15,6 +17,8 @@
     <Parameter Name="DNI" Type="int" Mode="In" />
     <Parameter Name="Precio" Type="decimal" Mode="In" />
     <Parameter Name="opc" Type="int" Mode="In" />
+    <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
+    <Parameter Name="FechaFin" Type="datetime" Mode="In" />
   </Function>
   <EntityContainer Name="SisEdutivaModelStoreContainer">
     <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" Schema="dbo" store:Type="Tables" />

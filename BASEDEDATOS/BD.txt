@@ -1,0 +1,127 @@
+select * from TBLPAGOSDT
+
+DROP TABLE TBLPAGOSDT
+
+CREATE TABLE TBLPAGOSDT (
+    IDCliente INT IDENTITY(1,1) PRIMARY KEY,
+    Cliente NVARCHAR(255),
+    DNI INT,
+    Precio DECIMAL(18, 2),
+    FechaInicio DATETIME NULL DEFAULT GETDATE(),
+    FechaFin DATETIME NULL DEFAULT GETDATE()
+);
+
+
+
+insert into TBLPAGOSDT(Cliente,DNI,Precio,FechaInicio,FechaFin) values('Eduardo',70883058,24.20, GETDATE(), GETDATE())
+
+
+
+int IDCliente 
+ string Cliente 
+ int DNI 
+    decimal Precio 
+
+	ALTER TABLE TBLPAGOSDT
+	ADD FechaInicio  DATETIME NULL,
+		FechaFin DATETIME NULL
+
+ALTER TABLE TBLPAGOSDT
+ALTER COLUMN FechaInicio DATETIME NULL DEFAULT GETDATE();
+
+-- Alterar la columna FechaFin para aceptar valores nulos y establecer el valor predeterminado a la fecha actual
+ALTER TABLE TuTabla
+ALTER COLUMN FechaFin DATETIME NULL DEFAULT GETDATE();
+	
+
+
+insert into TBLPAGOSDT(Cliente,DNI,Precio) values('Eduardo',70883058,24.20, GETDATE(), GETDATE())
+insert into TBLPAGOSDT(Cliente,DNI,Precio) values('MichaellPepe',70883058,24.20)
+insert into TBLPAGOSDT(Cliente,DNI,Precio) values('Martin Vizcarra',70883058,24.20)
+
+
+INSERT INTO TBLPAGOSDT (IDCliente, Cliente, DNI, Precio, FechaInicio, FechaFin)
+VALUES
+(4, 'Cliente4', 111111111, 75.20, GETDATE(), GETDATE()),
+(5, 'Cliente5', 222222222, 120.75, GETDATE(), GETDATE()),
+(6, 'Cliente6', 333333333, 90.50, GETDATE(), GETDATE()),
+
+
+INSERT INTO TBLPAGOSDT (IDCliente, Cliente, DNI, Precio, FechaInicio, FechaFin)
+VALUES
+(21, 'Cliente7', 444444444, 80.25, GETDATE(), GETDATE()),
+(20, 'Cliente7', 444444444, 80.25, GETDATE(), GETDATE())
+
+INSERT INTO TBLPAGOSDT (IDCliente, Cliente, DNI, Precio, FechaInicio, FechaFin)
+VALUES
+(10, 'Cliente7', 444444444, 80.25, GETDATE(), GETDATE());
+
+
+	exec SP_Gestionar_Pagos null,null,null,null,1
+
+
+DROP PROCEDURE SP_Gestionar_Pagos;
+
+CREATE PROCEDURE SP_Gestionar_Pagos
+    @IDCliente INT,
+    @Cliente NVARCHAR(255),
+    @DNI INT,
+    @Precio DECIMAL(18, 2),
+    @opc INT,
+    @FechaInicio DATETIME = NULL,
+    @FechaFin DATETIME = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Lista todos los pagos
+    IF @opc = 1
+    BEGIN
+        SELECT * FROM TBLPAGOSDT;
+    END
+
+    -- Actualiza un pago existente
+    ELSE IF @opc = 2
+    BEGIN
+        UPDATE TBLPAGOSDT
+        SET Cliente = @Cliente,
+            DNI = @DNI,
+            Precio = @Precio,
+            FechaInicio = @FechaInicio,
+            FechaFin = @FechaFin
+        WHERE IDCliente = @IDCliente;
+    END
+
+    -- Elimina un pago existente
+    ELSE IF @opc = 3
+    BEGIN
+        DELETE FROM TBLPAGOSDT WHERE IDCliente = @IDCliente;
+    END
+
+    -- Inserta si no existe, actualiza si existe
+    ELSE IF @opc = 4
+    BEGIN
+        IF EXISTS (SELECT 1 FROM TBLPAGOSDT WHERE IDCliente = @IDCliente)
+        BEGIN
+            UPDATE TBLPAGOSDT
+            SET Cliente = @Cliente,
+                DNI = @DNI,
+                Precio = @Precio,
+                FechaInicio = @FechaInicio,
+                FechaFin = @FechaFin
+            WHERE IDCliente = @IDCliente;
+        END
+        ELSE
+        BEGIN
+            INSERT INTO TBLPAGOSDT (IDCliente, Cliente, DNI, Precio, FechaInicio, FechaFin)
+            VALUES (@IDCliente, @Cliente, @DNI, @Precio, @FechaInicio, @FechaFin);
+        END
+    END
+END;
+
+
+
+EXEC GestionarPagos @opc = 1;
+
+EXEC GestionarPagos @opc = 1
+	

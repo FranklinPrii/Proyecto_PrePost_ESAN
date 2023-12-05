@@ -5,11 +5,13 @@
       <PropertyRef Name="IDCliente" />
     </Key>
     <Property Name="IDCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Cliente" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Cliente" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="DNI" Type="Int32" />
-    <Property Name="Precio" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="FechaInicio" Type="DateTime" Precision="3" />
+    <Property Name="FechaFin" Type="DateTime" Precision="3" />
   </EntityType>
-  <EntityContainer Name="SisEdutivaEntities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="SisEdutivaEntities3" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" />
     <FunctionImport Name="SP_Gestionar_Pagos" ReturnType="Collection(SisEdutivaModel.SP_Gestionar_Pagos_Result)">
       <Parameter Name="IDCliente" Mode="In" Type="Int32" />
@@ -17,12 +19,16 @@
       <Parameter Name="DNI" Mode="In" Type="Int32" />
       <Parameter Name="Precio" Mode="In" Type="Decimal" />
       <Parameter Name="opc" Mode="In" Type="Int32" />
+      <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
+      <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="SP_Gestionar_Pagos_Result">
     <Property Type="Int32" Name="IDCliente" Nullable="false" />
-    <Property Type="String" Name="Cliente" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Cliente" Nullable="true" MaxLength="255" />
     <Property Type="Int32" Name="DNI" Nullable="true" />
-    <Property Type="Decimal" Name="Precio" Nullable="true" Precision="8" Scale="2" />
+    <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="DateTime" Name="FechaInicio" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="FechaFin" Nullable="true" Precision="23" />
   </ComplexType>
 </Schema>
