@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="containers">
+    <br />    <br />    <br />
+
+    <div class="form">
+        <div class="contact-info">
+            <h3 class="title">ESAN DATA</h3>
+            <p class="text"> Informacion with the following details. and fillup the form with the details. </p>
+            <div class="info">
+                <div class="social-information">
+                    <i class="fa fa-map-marker"></i>
+                    <p>NPM,NY,USA</p>
+                </div>
+                <div class="social-information">
+                    <i class="fa fa-envelope-o"></i>
+                    <p>contact@bbbootstrap.com</p>
+                </div>
+                <div class="social-information">
+                    <i class="fa fa-mobile-phone"></i>
+                    <p>+1 989 989 9898 </p>
+                </div>
+            </div>
+            <div class="social-media">
+                <p>Connect with us :</p>
+                <div class="social-icons"> <a href="#"> <i class="fa fa-facebook-f"></i> </a> <a href="#"> <i class="fa fa-twitter"></i> </a> <a href="#"> <i class="fa fa-instagram"></i> </a> <a href="#"> <i class="fa fa-linkedin"></i> </a> </div>
+            </div>
+        </div>
+        <div class="contact-info-form">
+            <span class="circle one"></span> <span class="circle two"></span>
+            <form action="#" onclick="return false;" autocomplete="off">
+                <h3 class="title">USUARIO</h3><br />    
+                <div class="social-input-containers"> <input type="text" name="name" id="username" class="input" placeholder="Email o Codigo" /> </div><br />     
+                <div class="social-input-containers"> <input type="password" name="email" id="password" class="input" placeholder="Password" />  </div><br />    
+                @*<div class="social-input-containers"> <input type="tel" name="phone" class="input" placeholder="Phone" />  </div>*@
+                <div class="social-input-containers textarea"> @*<textarea name="message" class="input" placeholder="Message"></textarea>*@ </div> <input type="submit" value="Ingresar" onclick="sendData()" class="btn" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+            <script>
+
+                        function sendData() {
+                            var username = $('#username').val();
+                            var password = $('#password').val();
+
+                            //Enviar las peticiones Ajax
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GuardarDatos", "Home")',
+                                //Parametros
+                                data :{ username: username, password: password },
+
+                                success: function (a) {
+
+                                    if (a == 1) {
+                                        window.location.href = '@Url.Action("Index","Home")';
+                                    }
+                                    else {
+                                        alert("Datos incorrectos , Vuelve a escribir la contraseña");
+                                    }
+
+
+                                },
+                                error: function (error) {
+                                    alert("Contraseña incorrecta", error);
+                            }
+
+                            });
+
+                        }
+
+
+            </script>
+
+

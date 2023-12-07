@@ -13,11 +13,17 @@ namespace Proyecto_PrePost_ESAN.Controllers
 
         private SisEdutivaEntities3 db = new SisEdutivaEntities3();
 
+        //HOLAAAA
+
         public ActionResult Index()
         {
             return View();
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
 
         public JsonResult Listar()
         {
@@ -27,6 +33,24 @@ namespace Proyecto_PrePost_ESAN.Controllers
 
             return Json(new { data = Lista }, JsonRequestBehavior.AllowGet);
 
+        }
+
+        public ActionResult GuardarDatos(string username , string password )
+        {
+            var user = "abc";
+            var pass = "dfg";
+
+            if (user == username && pass == password)
+            {
+                return Json(1);
+
+            }
+            else
+            {
+                return Json(2);
+            }
+
+            
         }
 
         [HttpPost]

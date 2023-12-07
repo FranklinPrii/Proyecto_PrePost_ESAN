@@ -24,9 +24,28 @@
                     <label for="lname">FECHA INICIO</label>
                     <input type="date" id="txtFechaini" required>
                     <label for="lname">FECHA FIN</label>
-                    <input type="date" id="textFechafini" required>
+                    <input type="date" id="textFechafini" required><br />
+
+                    
+                    <label>CheckBox</label>
+                    <input type="checkbox" id="txtCheckBox"  onchange="toggleSelect()" required><br />
+
+                    <select name="cars" id="cars" disabled>
+                        <option value="volvo">Seleccione</option>
+                        <option value="volvo">Monetario</option>
+                        <option value="saab">Porcentual</option>
+                    </select>
+
+
+
+
 
                 </fieldset>
+
+
+
+
+
 
             </div>
             <div class="form-footer">
@@ -179,15 +198,21 @@
 
     </script>
 
+    <script>
+        function toggleSelect() {
+            var checkBox = document.getElementById("txtCheckBox");
+            var select = document.getElementById("cars");
+
+            // Habilitar o deshabilitar el select según el estado del checkbox
+            select.disabled = !checkBox.checked;
+        }
+    </script>
 
 
 
 
 
-
-
-
-      @*SCRIPT PARA INSERTAR*@
+    @*SCRIPT PARA INSERTAR*@
     <script>
 
            /*btnInsertar*/
@@ -210,7 +235,7 @@
                                 /*alert("Registro insertado exitosamente");*/
                             },
                             error: function () {
-                                alert("Hubo un error al insertar o actualizar el pago");
+                                alert("Colocar los Datos correctamente y de manera Obligatoria");
                             }
                         });
 
@@ -220,14 +245,14 @@
     </script>
 
 
-   
+
 
     @*OBTENER LOS DATOS OCULTAMENTE Por EL hidden *@
-<script>
+    <script>
         $(document).ready(function () {
 
             var table = $('#myTable').DataTable();
-            
+
 
             $('#myTable tbody').on('click', 'tr', function () {
                 var rowData = table.row(this).data();
@@ -280,7 +305,7 @@
                     var modalFechaIni = $("#txtFechaIni").val();
                     var modalFechaFini = $("#txtFechaFin").val();
 
-                    
+
                     // Enviar datos al controlador mediante AJAX
                     $.ajax({
                         url: "@Url.Action("ActualizarPago", "Home")",
@@ -307,7 +332,7 @@
 
 
 
-</script>
+    </script>
 
 
     @*ELIMINAR REGISTRO*@
@@ -326,6 +351,7 @@
                 var rowData = table.row(this).data();
 
                 $("#tempid").val(rowData.IDCliente);
+
 
                /* console.log(rowData.IDCliente);*/
 
@@ -362,6 +388,6 @@
     </script>
 
 
-    
+
 
 }
