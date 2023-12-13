@@ -15,6 +15,9 @@
           <Property Name="Precio" Type="decimal" Precision="18" Scale="2" />
           <Property Name="FechaInicio" Type="datetime" />
           <Property Name="FechaFin" Type="datetime" />
+          <Property Name="CheckBox" Type="bit" />
+          <Property Name="Eleccion" Type="nvarchar" MaxLength="50" />
+          <Property Name="NombreArchivo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <Function Name="SP_Gestionar_Pagos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IDCliente" Type="int" Mode="In" />
@@ -24,6 +27,9 @@
           <Parameter Name="opc" Type="int" Mode="In" />
           <Parameter Name="FechaInicio" Type="datetime" Mode="In" />
           <Parameter Name="FechaFin" Type="datetime" Mode="In" />
+          <Parameter Name="CheckBox" Type="bit" Mode="In" />
+          <Parameter Name="Eleccion" Type="nvarchar" Mode="In" />
+          <Parameter Name="NombreArchivo" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="SisEdutivaModelStoreContainer">
           <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" Schema="dbo" store:Type="Tables" />
@@ -43,8 +49,11 @@
           <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="FechaInicio" Type="DateTime" Precision="3" />
           <Property Name="FechaFin" Type="DateTime" Precision="3" />
+          <Property Name="CheckBox" Type="Boolean" />
+          <Property Name="Eleccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NombreArchivo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="SisEdutivaEntities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SisEdutivaEntities6" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" />
           <FunctionImport Name="SP_Gestionar_Pagos" ReturnType="Collection(SisEdutivaModel.SP_Gestionar_Pagos_Result)">
             <Parameter Name="IDCliente" Mode="In" Type="Int32" />
@@ -54,6 +63,9 @@
             <Parameter Name="opc" Mode="In" Type="Int32" />
             <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
             <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+            <Parameter Name="CheckBox" Mode="In" Type="Boolean" />
+            <Parameter Name="Eleccion" Mode="In" Type="String" />
+            <Parameter Name="NombreArchivo" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SP_Gestionar_Pagos_Result">
@@ -63,13 +75,16 @@
           <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="2" />
           <Property Type="DateTime" Name="FechaInicio" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="FechaFin" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="CheckBox" Nullable="true" />
+          <Property Type="String" Name="Eleccion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="NombreArchivo" Nullable="true" MaxLength="200" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SisEdutivaModelStoreContainer" CdmEntityContainer="SisEdutivaEntities3">
+        <EntityContainerMapping StorageEntityContainer="SisEdutivaModelStoreContainer" CdmEntityContainer="SisEdutivaEntities6">
           <EntitySetMapping Name="TBLPAGOSDT">
             <EntityTypeMapping TypeName="SisEdutivaModel.TBLPAGOSDT">
               <MappingFragment StoreEntitySet="TBLPAGOSDT">
@@ -79,6 +94,9 @@
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="CheckBox" ColumnName="CheckBox" />
+                <ScalarProperty Name="Eleccion" ColumnName="Eleccion" />
+                <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -91,6 +109,9 @@
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="CheckBox" ColumnName="CheckBox" />
+                <ScalarProperty Name="Eleccion" ColumnName="Eleccion" />
+                <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

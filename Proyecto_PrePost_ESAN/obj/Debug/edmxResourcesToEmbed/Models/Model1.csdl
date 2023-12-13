@@ -10,8 +10,11 @@
     <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="FechaInicio" Type="DateTime" Precision="3" />
     <Property Name="FechaFin" Type="DateTime" Precision="3" />
+    <Property Name="CheckBox" Type="Boolean" />
+    <Property Name="Eleccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NombreArchivo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityContainer Name="SisEdutivaEntities3" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="SisEdutivaEntities6" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="TBLPAGOSDT" EntityType="Self.TBLPAGOSDT" />
     <FunctionImport Name="SP_Gestionar_Pagos" ReturnType="Collection(SisEdutivaModel.SP_Gestionar_Pagos_Result)">
       <Parameter Name="IDCliente" Mode="In" Type="Int32" />
@@ -21,6 +24,9 @@
       <Parameter Name="opc" Mode="In" Type="Int32" />
       <Parameter Name="FechaInicio" Mode="In" Type="DateTime" />
       <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+      <Parameter Name="CheckBox" Mode="In" Type="Boolean" />
+      <Parameter Name="Eleccion" Mode="In" Type="String" />
+      <Parameter Name="NombreArchivo" Mode="In" Type="String" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="SP_Gestionar_Pagos_Result">
@@ -30,5 +36,8 @@
     <Property Type="Decimal" Name="Precio" Nullable="true" Precision="18" Scale="2" />
     <Property Type="DateTime" Name="FechaInicio" Nullable="true" Precision="23" />
     <Property Type="DateTime" Name="FechaFin" Nullable="true" Precision="23" />
+    <Property Type="Boolean" Name="CheckBox" Nullable="true" />
+    <Property Type="String" Name="Eleccion" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="NombreArchivo" Nullable="true" MaxLength="200" />
   </ComplexType>
 </Schema>

@@ -15,10 +15,10 @@ namespace Proyecto_PrePost_ESAN.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class SisEdutivaEntities3 : DbContext
+    public partial class SisEdutivaEntities6 : DbContext
     {
-        public SisEdutivaEntities3()
-            : base("name=SisEdutivaEntities3")
+        public SisEdutivaEntities6()
+            : base("name=SisEdutivaEntities6")
         {
         }
     
@@ -29,7 +29,7 @@ namespace Proyecto_PrePost_ESAN.Models
     
         public virtual DbSet<TBLPAGOSDT> TBLPAGOSDT { get; set; }
     
-        public virtual ObjectResult<SP_Gestionar_Pagos_Result> SP_Gestionar_Pagos(Nullable<int> iDCliente, string cliente, Nullable<int> dNI, Nullable<decimal> precio, Nullable<int> opc, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin)
+        public virtual ObjectResult<SP_Gestionar_Pagos_Result> SP_Gestionar_Pagos(Nullable<int> iDCliente, string cliente, Nullable<int> dNI, Nullable<decimal> precio, Nullable<int> opc, Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin, Nullable<bool> checkBox, string eleccion, string nombreArchivo)
         {
             var iDClienteParameter = iDCliente.HasValue ?
                 new ObjectParameter("IDCliente", iDCliente) :
@@ -59,7 +59,19 @@ namespace Proyecto_PrePost_ESAN.Models
                 new ObjectParameter("FechaFin", fechaFin) :
                 new ObjectParameter("FechaFin", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Gestionar_Pagos_Result>("SP_Gestionar_Pagos", iDClienteParameter, clienteParameter, dNIParameter, precioParameter, opcParameter, fechaInicioParameter, fechaFinParameter);
+            var checkBoxParameter = checkBox.HasValue ?
+                new ObjectParameter("CheckBox", checkBox) :
+                new ObjectParameter("CheckBox", typeof(bool));
+    
+            var eleccionParameter = eleccion != null ?
+                new ObjectParameter("Eleccion", eleccion) :
+                new ObjectParameter("Eleccion", typeof(string));
+    
+            var nombreArchivoParameter = nombreArchivo != null ?
+                new ObjectParameter("NombreArchivo", nombreArchivo) :
+                new ObjectParameter("NombreArchivo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Gestionar_Pagos_Result>("SP_Gestionar_Pagos", iDClienteParameter, clienteParameter, dNIParameter, precioParameter, opcParameter, fechaInicioParameter, fechaFinParameter, checkBoxParameter, eleccionParameter, nombreArchivoParameter);
         }
     }
 }

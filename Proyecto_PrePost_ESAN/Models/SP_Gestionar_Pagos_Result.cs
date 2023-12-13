@@ -19,5 +19,8 @@ namespace Proyecto_PrePost_ESAN.Models
         public Nullable<decimal> Precio { get; set; }
         public Nullable<System.DateTime> FechaInicio { get; set; }
         public Nullable<System.DateTime> FechaFin { get; set; }
+        public Nullable<bool> CheckBox { get; set; }
+        public string Eleccion { get; set; }
+        public string NombreArchivo { get; set; }
     }
 }

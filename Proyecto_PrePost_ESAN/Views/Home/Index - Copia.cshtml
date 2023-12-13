@@ -21,14 +21,14 @@
             </div>
             <div class="form-body">
                 <fieldset>
-                    @using (Html.BeginForm("Insertar", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("RegistrarIdiomaDocumento2", "Idioma", FormMethod.Post, new { id = "formRegistroidiomaDocumento", data_ajax = "true" }))
                     {
 
                         @*<input type="file" name="archivo" id="archivo" />
-                            <input type="button" value="Subir archivo" onclick="subirArchivo()" />*@
+            <input type="button" value="Subir archivo" onclick="subirArchivo()" />*@
 
                         @*<input type="file" id="pdfFile" name="pdfFile" />*@
-                            <input type="file" name="ArchivoAdjunto" id="pdfFile" required/>
+                        <input type="file" name="archivoDocumento" id="archivoDocumento" class="custom-file-input" size="5120" lang="es" required>
 
                         <legend><i class="fa fa-user"></i> User Information</legend>
                         <label for="fname">CLIENTE</label>
@@ -137,7 +137,6 @@
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
                             <th>Eleccion</th>
-                            <th>Documento</th>
                         </tr>
                     </thead>
                 </table>
@@ -154,7 +153,7 @@
             <input type="hidden" id="tempFechainicio" name="tempFechainicio" />
             <input type="hidden" id="tempFechafin" name="tempFechafin" />
 
-            <a href=""></a>
+
         </div>
     </div>
 </div>
@@ -162,6 +161,75 @@
 
 @section scripts{
     <script>
+
+
+
+        $('#formRegistroidiomaDocumento').submit(function (e) {
+			e.preventDefault(); // Evita que el formulario se envíe normalmente
+
+			// Deshabilita el botón antes de realizar la llamada Ajax
+			$('#btnRegistroidiomaDocumento').prop('disabled', true);
+			$('#loadingIndicator').show();
+
+            // Crea un objeto FormData para incluir el archivo
+            var formData = new FormData(this);
+
+            // Realiza la llamada Ajax
+            $.ajax({
+                url: '@Url.Action("RegistrarIdiomaDocumento2", "Home")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    // Maneja la respuesta del servidor
+					// Puedes realizar acciones adicionales si es necesario
+					if (data.success) {
+						window.location.href = data.redirectUrl;
+					}
+					else {
+						//showAlert(data.message);
+						var alertDiv = document.createElement("div");
+						alertDiv.className = "alert alert-danger";
+						alertDiv.textContent = data.message;
+
+						// Agregar la alerta al div divMensajeVal
+						var divMensajeVal = document.querySelector(".divMensajeVal");
+						divMensajeVal.appendChild(alertDiv);
+
+						// Desvanecer lentamente después de 10 segundos
+						$(alertDiv).fadeOut(8000);
+					}
+                },
+                error: function (error) {
+                    // Maneja los errores si hay alguno
+					var alertDiv = document.createElement("div");
+					alertDiv.className = "alert alert-danger";
+					alertDiv.textContent = data.message;
+
+					// Agregar la alerta al div divMensajeVal
+					var divMensajeVal = document.querySelector(".divMensajeVal");
+					divMensajeVal.appendChild(alertDiv);
+
+					// Desvanecer lentamente después de 10 segundos
+					$(alertDiv).fadeOut(12000);
+				},
+				complete: function () {
+					// Habilita el botón después de completar la llamada Ajax
+					$('#btnRegistroidiomaDocumento').prop('disabled', false);
+					$('#loadingIndicator').hide();
+					// Restablece el formulario a su estado inicial
+					$('#formRegistroidiomaDocumento')[0].reset();
+					$('#archivoSeleccionado').empty();
+				}
+            });
+		});
+
+
+
+
+
+
         $(document).ready(function () {
 
 
@@ -192,15 +260,6 @@
                         }
                     },
                     { "data": "Eleccion" },
-                    {
-                        "data": "NombreArchivo",
-                        "render": function (data, type, row) {
-
-
-                            return "<a target='_blank' href='" + data + "'><img src='https://www.defensoria.gob.bo/www/img/icons/application-pdf.svg' style='width: 30px;'></a>";
-                        }
-                    }
-
 
                 ]
 
@@ -246,7 +305,7 @@
 
 
     @*SCRIPT PARA INSERTAR*@
-<script>
+    <script>
 
            /*btnInsertar*/
                  $(document).ready(function () {
@@ -258,55 +317,36 @@
                             var fechafin = $("#textFechafini").val();
                             var idCliente = 1;
 
+                            /*var formData = new FormData($('#formularioArchivo')[0]);*/
+                            var formData = new FormData();
+                            formData.append("pdfFile", $("#pdfFile")[0].files[0]);
+
                             // Obtener el valor del CheckBox y la Elección
                             var checkBoxValue = $("#txtCheckBox").is(":checked");
                             var eleccionValue = $("#txtCombo").val();
 
+                            //alert(formData);
+                            //return false;
+
                             // Verificar si se ha seleccionado algo en el combo box
                             if (!eleccionValue || eleccionValue === "Seleccione") {
-                                alert("Por favor, seleccione una opción en el combo box.");
-                                return; // No continuar si no se ha seleccionado nada
+                                alert("Seleccione una opción en el combo box.");
+                                return false; // No continuar si no se ha seleccionado nada
                             }
 
-                            // Obtener el archivo PDF
-
-                            var pdfFile = $("#pdfFile")[0].files[0];
-                            if (!pdfFile) {
-                                alert("Seleccione un archivo PDF.");
-                                return false;
-                            }
-
-                            // Obtener el nombre del archivo
-                            var nombreArchivo = pdfFile.name;
-
-
-                            // Crear un objeto FormData y agregar todos los datos
-                            var formData = new FormData();
-                            formData.append("idCliente", idCliente);
-                            formData.append("cliente", cliente);
-                            formData.append("dni", dni);
-                            formData.append("precio", precio);
-                            formData.append("fechainicio", fechainicio);
-                            formData.append("fechafin", fechafin);
-                            formData.append("checkBoxValue", checkBoxValue);
-                            formData.append("eleccionValue", eleccionValue);
-                            formData.append("pdfFile", pdfFile);
-                            formData.append("nombreArchivo", nombreArchivo);
-
-                            // Realizar la llamada AJAX con FormData
+                            alert("chama");
                             $.ajax({
                                 url: "@Url.Action("Insertar", "Home")",
                                 type: "POST",
                                 data: formData,
-                                contentType: false, // No establecer el tipo de contenido
-                                processData: false, // No procesar los datos automáticamente
                                 success: function () {
                                     alert("Registro insertado exitosamente");
-                                     
                                     window.location.href = '/';
                                 },
                                 error: function () {
                                     alert("Colocar los Datos correctamente y de manera Obligatoria");
+
+
                                 }
                             });
                         });
@@ -314,29 +354,30 @@
 
 
 
-</script>
+
+    </script>
 
 
     @*<script>
-            function subirArchivo() {
-                alert("Hola");
-                    var formData = new FormData($('#formularioArchivo')[0]);
-                    alert("hola");
-                    $.ajax({
-                        url: "@Url.Action("SubirArchivo", "Home")",
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            $('#mensaje').html(data);
-                        },
-                        error: function () {
-                            $('#mensaje').html('Error al subir el archivo.');
-                        }
-                    });
-                }
-        </script>*@
+        function subirArchivo() {
+            alert("Hola");
+                var formData = new FormData($('#formularioArchivo')[0]);
+                alert("hola");
+                $.ajax({
+                    url: "@Url.Action("SubirArchivo", "Home")",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $('#mensaje').html(data);
+                    },
+                    error: function () {
+                        $('#mensaje').html('Error al subir el archivo.');
+                    }
+                });
+            }
+    </script>*@
 
 
 
@@ -361,7 +402,7 @@
 
             });
 
-        }); 
+        });
 
 
     @* Mostrar los datos Obtenidos en el Modal *@
